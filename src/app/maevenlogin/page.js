@@ -2,10 +2,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 const WeeklyMealSection = () => {
   const [username, setUsername] = useState('');
@@ -18,7 +14,6 @@ const WeeklyMealSection = () => {
     e.preventDefault();
 
     try {
-      await wait(2000);
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/custom/v1/login-user`, {
         method: 'POST',
         headers: {

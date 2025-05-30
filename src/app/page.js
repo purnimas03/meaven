@@ -6,12 +6,7 @@ import MissionSection from "./components/home/Misson";
 import BookingSection from "./components/home/BookingSection";
 import OurChefs from "./components/home/OurChefs";
 
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export default async  function Home() {
-  await wait(3000);
   return (
     <div>
       <Banner/>
