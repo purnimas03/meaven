@@ -31,12 +31,13 @@ export default function DishesSection() {
         </div>
 
         <div className="flex justify-center max-sxl:grid grid-cols-4 mt-8 max-sxl:grid-cols-2 max-ssm:grid-cols-1 gap-y-5 gap-x-5 bg-[#ffedd6] p-5 pb-10 border border-solid border-[#fff8ee] max-sxl:[&>*:nth-child(even)]:border-r-0 max-sxl:[&>*:nth-child(even)]:pr-0">
-          {dishesData.map((dish, index) => (
+          {dishesData.map((dish, index) => {
+            const slug = dish.slug.split('/').filter(Boolean).pop();
             <div
               key={index}
               className="border-r pr-5 last:pr-0 max-sxl:pr-0 last:border-r-0 w-[25%] max-sxl:w-full border-[#fff8ee] max-ssm:border-b max-ssm:last:pb-0 max-ssm:last:border-b-0 max-ssm:border-[#555555] max-ssm:border-solid max-ssm:pb-[10px] max-sxl:border-0 border-solid max-ssm:border-r-0 max-ssm:pr-0"
             >
-              <Link href={dish.slug}>
+              <Link href={`/weaklymealprep/${slug}`}>
                   <Image
                     src={dish.image}
                     alt={dish.alt}
@@ -60,7 +61,7 @@ export default function DishesSection() {
                   </p>
               </Link>
             </div>
-          ))}
+          })}
         </div>
 
         <div className="text-center mt-10">
