@@ -1,0 +1,518 @@
+@import "tailwindcss"; 
+
+
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 1000px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-5xl: 1800px;
+  --breakpoint-4xl: 1700px;
+  --breakpoint-3xxl: 1637x;
+  --breakpoint-3xd: 1632x;
+  --breakpoint-3xl: 1600;
+  --breakpoint-2xxl: 1510;
+  --breakpoint-2xl: 1500;
+  --breakpoint-xxl: 1400;
+  --breakpoint-1sxl: 1320;
+  --breakpoint-xl: 1280;
+  --breakpoint-sxl: 1200;
+  --breakpoint-sxx: 1100;
+  --breakpoint-mmmd: 1000;
+  --breakpoint-mmd: 991;
+  --breakpoint-mxs: 840;
+  --breakpoint-ssm: 767;
+  --breakpoint-xss: 580;
+  --breakpoint-xs: 480;
+  --breakpoint-sxs: 360;
+  --font-human-sanslight: "human_sanslight", sans-serif;
+  --font-human-sansregular: "human_sansregular", sans-serif;
+  --font-human-sansmedium: "human_sansmedium", sans-serif;
+  --font-human-sansbold: "human_sansbold", sans-serif;
+  --font-source-serif-4regular: "source_serif_4regular", sans-serif;
+  --font-source-serif-proregular: "source_serif_proregular", sans-serif;
+  --font-source-serif-prolight: "source_serif_prolight", sans-serif;
+  --color-primary: #74bf42;
+  --color-yellowish: #fddb00;
+  --color-celadongreen:#178b77;
+  --shadow-custombtn: 6.022px 6.688px 0px #032922;
+}
+
+@layer utilities {
+  .bg-arrow-transparent::before {
+    background-image: url("/icons/Arrow-traingle.png"); 
+  }
+
+  .bg-ellipse-border::before {
+    background-image: url("/icons/Ellipse-border.png"); 
+  }
+}
+
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+
+  .margin-wrap-left {
+      margin-left: calc((100% - 1510px) / 2);
+      padding-left: 15px;
+  }
+
+  .margin-wrap-right {
+      margin-right: calc((100% - 1510px) / 2);
+      padding-right: 15px;
+  }
+  
+  .container {
+      max-width: 1510px !important;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+
+
+  @layer utilities {
+    .position-inherit {
+      position: inherit;
+    }
+  }
+  
+
+  .margin-wrap-left {
+    margin-left: calc((100% - 1510px) / 2);
+    padding-left: 15px;
+  }
+
+  .margin-wrap-right {
+      margin-right: calc((100% - 1510px) / 2);
+      padding-right: 15px;
+  }
+
+  .top-post {
+      top: inherit !important;
+  }
+
+  .left-in {
+      left: inherit;
+  }
+
+  .right-in {
+      right: inherit;
+  }
+
+  .min-auto {
+      min-width: auto;
+  }
+
+  .transnitone-anim {
+      transition: 0.4s all ease-in-out;
+  }
+  .transnitone-anim_border {
+      transition: all .35s ease;
+  }
+
+  .image-white {
+      filter: brightness(0) invert(1);
+  }
+
+
+
+
+
+@font-face {
+  font-family: 'human_sansblack';
+  src: url('/fonts/humansans-black-webfont.eot');
+  src: url('/fonts/humansans-black-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-black-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-black-webfont.woff') format('woff'),
+       url('/fonts/humansans-black-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-black-webfont.svg#human_sansblack') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'human_sansbold';
+  src: url('/fonts/humansans-bold-webfont.eot');
+  src: url('/fonts/humansans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-bold-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-bold-webfont.woff') format('woff'),
+       url('/fonts/humansans-bold-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-bold-webfont.svg#human_sansbold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'human_sanslight';
+  src: url('/fonts/humansans-light-webfont.eot');
+  src: url('/fonts/humansans-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-light-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-light-webfont.woff') format('woff'),
+       url('/fonts/humansans-light-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-light-webfont.svg#human_sanslight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'human_sansmedium';
+  src: url('/fonts/humansans-medium-webfont.eot');
+  src: url('/fonts/humansans-medium-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-medium-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-medium-webfont.woff') format('woff'),
+       url('/fonts/humansans-medium-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-medium-webfont.svg#human_sansmedium') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'human_sansregular';
+  src: url('/fonts/humansans-regular-webfont.eot');
+  src: url('/fonts/humansans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-regular-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-regular-webfont.woff') format('woff'),
+       url('/fonts/humansans-regular-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-regular-webfont.svg#human_sansregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'human_sansthin';
+  src: url('/fonts/humansans-thin-webfont.eot');
+  src: url('/fonts/humansans-thin-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/humansans-thin-webfont.woff2') format('woff2'),
+       url('/fonts/humansans-thin-webfont.woff') format('woff'),
+       url('/fonts/humansans-thin-webfont.ttf') format('truetype'),
+       url('/fonts/humansans-thin-webfont.svg#human_sansthin') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'source_serif_4regular';
+  src: url('/fonts/sourceserif4-variablefont_opszwght-webfont.eot');
+  src: url('/fonts/sourceserif4-variablefont_opszwght-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/sourceserif4-variablefont_opszwght-webfont.woff2') format('woff2'),
+       url('/fonts/sourceserif4-variablefont_opszwght-webfont.woff') format('woff'),
+       url('/fonts/sourceserif4-variablefont_opszwght-webfont.ttf') format('truetype'),
+       url('/fonts/sourceserif4-variablefont_opszwght-webfont.svg#source_serif_4regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'source_serif_proregular';
+  src: url('/fonts/source-serif-pro.regular-webfont.eot');
+  src: url('/fonts/source-serif-pro.regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/source-serif-pro.regular-webfont.woff2') format('woff2'),
+       url('/fonts/source-serif-pro.regular-webfont.woff') format('woff'),
+       url('/fonts/source-serif-pro.regular-webfont.ttf') format('truetype'),
+       url('/fonts/source-serif-pro.regular-webfont.svg#source_serif_proregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+
+@font-face {
+  font-family: 'source_serif_prolight';
+  src: url('/fonts/sourceserifpro-light-webfont.eot');
+  src: url('/fonts/sourceserifpro-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/sourceserifpro-light-webfont.woff2') format('woff2'),
+       url('/fonts/sourceserifpro-light-webfont.woff') format('woff'),
+       url('/fonts/sourceserifpro-light-webfont.ttf') format('truetype'),
+       url('/fonts/sourceserifpro-light-webfont.svg#source_serif_prolight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 1510px !important;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.swiper-dragger .swiper-scrollbar-drag {
+  height: 8px;
+  background: #ffedd6;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 9;
+  margin: 0px 0 0px 0;
+  bottom: -2px;
+}
+
+
+.custom-swiper-pagination .swiper-pagination-bullet {
+  height: 11px;
+  width: 11px;
+  background: #ffffff73;
+  border-radius: 100%;
+}
+
+.custom-swiper-pagination .swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+header ul li a {
+  font-size: 20px;
+  line-height: 30px;
+  color: #000;
+  font-weight: 400;
+  display: inline-block;
+  font-family: 'human_sansregular';
+  transition: 0.4s all ease-in-out;
+  position: relative;
+}
+
+
+header ul li a:hover::before {
+  width: 100%;
+  opacity: 1;
+}
+
+header ul li a::before {
+  bottom: -4px;
+  display: block;
+  height: 3px;
+  width: 0%;
+  content: "";
+  background-color: #178b77;
+  opacity: 0;
+  position: absolute;
+  transition: all .35s ease;
+  color: #178b77;
+}
+
+header .menu-item-has-children a::before {
+  display: none;
+}
+header ul {
+  grid-gap: 50px;
+}
+
+header  ul.sub-menu a::before {
+  display: none;
+}
+
+
+header  ul.sub-menu {
+  position: absolute;
+  background: #fff;
+  text-align: left;
+  padding: 10px 0 10px 5px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border-radius: 6px;
+}
+
+header .menu-item-has-children:hover > .sub-menu {
+  opacity: 1;
+  visibility: visible; 
+  transform: translateY(0); 
+}
+
+header  ul i#caret-id {
+  margin: 0 0 0 5px;
+}
+
+
+header ul .sub-menu a {
+  font-size: 16px;
+  line-height: 26px;
+  text-align: left;
+  padding: 10px 10px;
+  min-width: 180px;
+  max-width: 300px;
+  transition: 0.4s all ease-in-out;
+}
+
+header ul .sub-menu a:hover {
+  background: #f0f0f0;
+}
+
+
+.menu-footer-menu-container a, .menu-bottom-menu-container a {
+  font-size: 18px;
+  color: #bcbcbc;
+  border-bottom: 2px  dotted  #bcbcbc;
+  display: block;
+  margin: 0 0 15px 0;
+  font-family: 'human_sanslight';
+  padding: 0 0 15px 0;
+  transition: 0.4s all ease-in-out;
+}
+
+.menu-footer-menu-container a:hover,
+.menu-bottom-menu-container a:hover {
+  color: #ffedd6;
+  border-color: #ffedd6;
+}
+
+.menu-footer-menu-container li:last-of-type a,
+.menu-bottom-menu-container li:last-of-type a {
+  border-bottom: 0px;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.ourchefs-images img:nth-child(2), .ourchefs-images img:nth-child(3) {
+  height: 282px;
+}
+
+.ourchefs-images img:nth-child(1), .ourchefs-images img:nth-child(4) {
+  height: 366px;
+}
+
+.ourchefs-images img:nth-child(4) {
+  margin: -84px 0 0 0;
+}
+
+.getintouch .contentwrap {
+  margin-left: calc((100vw - 1510px) / 2);
+  padding-left: 15px;
+}
+
+
+@media (max-width: 1510px) {
+  .getintouch .contentwrap {
+      margin-left: 0;
+  }
+}
+
+
+@media (max-width:1500px){ 
+  header ul {
+      grid-gap: 30px;
+  }
+}
+
+
+@media (max-width:1400px){ 
+  header ul li a {
+      font-size: 18px;
+      line-height: 28px;
+  }
+
+  
+}
+
+
+@media (max-width:1320px){  
+  header ul {
+      grid-gap: 20px;
+  }
+
+  .menu-item-has-children i {
+      font-size: 12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  header ul li a {
+      font-size: 14px;
+      line-height: 24px;
+  }
+}
+
+
+@media (max-width:991px){  
+
+  header ul li a {
+      font-size: 16px;
+      line-height: 26px;
+  }
+
+  header .menu-header-menu-container {
+      position: relative;
+      top: 13%;
+      left: 15px;
+  }
+
+  .menu-item-has-children i {
+      font-size: 14px;
+  }
+
+  header .menu-item-has-children .fa-angle-down {
+      margin: 0 0 0 11px;
+      position: absolute;
+      right: 30px;
+      top: 3px;
+  }
+  
+  header .menu-item-has-children {
+      position: relative;
+      display: block;
+      width: 100%;
+  }
+
+  header .menu-item-has-children:hover > .sub-menu {
+     display: none;
+  }
+
+  header .menu-item-has-children.active ul.sub-menu {
+      opacity: 1;
+      visibility: inherit;
+      position: relative;
+      transform: none;
+      display: block;
+  }
+
+  header .menu-item-has-children.active .fa-angle-down {
+      transform: rotate(180deg);
+  }
+}
