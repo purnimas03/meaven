@@ -13,10 +13,7 @@ export default function Slider() {
   useEffect(() => {
     async function loadBanner() {
       const data = await fetchFromAPI('/custom/v1/banner');
-      if (Array.isArray(data) && data.length > 0) {
-        new Promise(resolve => setTimeout(resolve, ms));
-        setSlides(data);
-      } 
+      setSlides(data);
     }
 
     loadBanner();

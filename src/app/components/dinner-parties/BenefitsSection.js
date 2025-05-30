@@ -13,7 +13,6 @@ const BenefitsSection = () => {
     async function loadBenefits() {
       const list = await fetchFromAPI('/wp/v2/pages?slug=dinner-parties');
       if (Array.isArray(list) && list.length > 0) {
-        new Promise(resolve => setTimeout(resolve, ms));
         const benefitData = list[0]?.acf?.right_image_with_text_section;
         setBenefitFields(benefitData);
       }
