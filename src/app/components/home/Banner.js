@@ -37,7 +37,7 @@ export default function Slider() {
             <img
               loading="lazy"
               src={slide.image}
-              className="w-full h-full object-cover"
+              className="w-full max-h-[600px] h-full object-cover"
               alt={`Slide ${slide.id}`}
             />
             <h2 className="absolute z-[99] max-w-[800px] mx-auto text-white font-source_serif_proregular text-[70px] max-mmmd:text-[50px] max-sxl:text-6xl leading-[80px] max-ssm:text-4xl text-center px-4 py-2">
