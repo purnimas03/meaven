@@ -35,7 +35,7 @@ const Footer = () => {
           
           {/* Right Section */}
           <div className="max-w-80 w-full pt-7 justify-self-end max-ssm:justify-self-auto">
-            <Link href="/weekly-meal-prep" className="flex items-center mb-6 pb-6 px-3 gap-x-4 group last-of-type:border-b-0 transnitone-anim hover:border-celadongreen border-b border-solid border-[#444444]">
+            <Link href="/Weeklymealprep" className="flex items-center mb-6 pb-6 px-3 gap-x-4 group last-of-type:border-b-0 transnitone-anim hover:border-celadongreen border-b border-solid border-[#444444]">
               <span className="min-w-52 font-human_sansmedium transnitone-anim max-sxl:text-xl text-2xl group-hover:text-celadongreen text-black inline-block">Weekly Meal Prep</span>
               <FontAwesomeIcon 
                 icon={faArrowUpRightFromSquare} 
