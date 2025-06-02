@@ -84,7 +84,7 @@ const Footer = () => {
             <div>
               <div>
                 <div>
-                  <Link href="/maeven-login" className="text-[#bcbcbc] transition-all hover:text-[#ffedd6] hover:border-[#ffedd6] font-human_sanslight text-lg border-b-2 border-dotted border-[#bcbcbc] block mb-[15px] pb-[15px] sxl:text-base max-sxl:mb-[10px] max-sxl:pb-[10px]">
+                  <Link href="/maevenlogin" className="text-[#bcbcbc] transition-all hover:text-[#ffedd6] hover:border-[#ffedd6] font-human_sanslight text-lg border-b-2 border-dotted border-[#bcbcbc] block mb-[15px] pb-[15px] sxl:text-base max-sxl:mb-[10px] max-sxl:pb-[10px]">
                     Login
                   </Link>
                 </div>
@@ -124,7 +124,7 @@ const Footer = () => {
             </div>
             <div  className="menu-footer-menu-container">
                 <ul className="menu">
-                  <li><Link href="/weekly-meal-prep">Weekly Meal Prep</Link></li>
+                  <li><Link href="/Weeklymealprep">Weekly Meal Prep</Link></li>
                   <li><Link href="/dinner-parties">Dinner Parties</Link></li>
                   <li><Link href="/maeven-athletics">Maeven Athletics</Link></li>
                   <li><Link href="/about-us">About Us</Link></li>
@@ -133,7 +133,7 @@ const Footer = () => {
             <div className="menu-bottom-menu-container">
               <ul className="menu">
                 <li><Link href="/service-information">Service Information</Link></li>
-                <li><Link href="/careers">Careers</Link></li>
+                <li><Link href="/Careers">Careers</Link></li>
                 <li><Link href="/cancellation-policy">Cancellation Policy</Link></li>
                 <li><Link href="/terms-and-conditions">Terms and Conditions</Link></li>
               </ul>
