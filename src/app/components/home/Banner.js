@@ -1,24 +1,9 @@
-"use client";
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
-export default function Slider() {
-    
-  const [slides, setSlides] = useState([]);
-
-  useEffect(() => {
-    async function loadBanner() {
-      const data = await fetchFromAPI('/custom/v1/banner');
-      setSlides(data);
-    }
-
-    loadBanner();
-  }, []);
-
+export default function Slider(slides) {
   return (
     <div className="relative">
       <Swiper

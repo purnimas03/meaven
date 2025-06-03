@@ -1,34 +1,9 @@
-"use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
 
 export default function OurChefs() {
-  const [checfList, fetchChefs] = useState([]);
-    
-      useEffect(() => {
-        async function loadChefList() {
-          const list = await fetchFromAPI('/custom/v1/our-chefs');
-          fetchChefs(list);
-        }
-        loadChefList();
-      }, []);
-
-  const [chefAcf, setAcfFields] = useState([]);
-      useEffect(() => {
-        async function loadChefAcf() {
-          const list = await fetchFromAPI('/wp/v2/pages?slug=home');
-          if (Array.isArray(list) && list.length > 0) {
-            const chefData = list[0]?.acf?.chef_section;
-            setAcfFields(chefData);
-          }
-        }
-        loadChefAcf();
-      }, []);
-
-  return (
+ 
+ return (
     <section className="py-24 bg-[#ebebe5] max-ssm:py-16">
       <div className="container">
         <div className="text-center">

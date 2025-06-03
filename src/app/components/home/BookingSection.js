@@ -1,26 +1,7 @@
-'use client';
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
 export default function BookingSection() {
-  const [acfFields, setAcfFields] = useState(null);
-  
-  useEffect(() => {
-    async function loadTextImage() {
-      const section = await fetchFromAPI('/wp/v2/pages?slug=home');
-      if (Array.isArray(section) && section.length > 0) {
-        const text_and_image_section = section[0]?.acf?.text_and_image_section;
-        setAcfFields(text_and_image_section);
-      }
-    }
-
-    loadTextImage();
-  }, []);
-
-  if (!acfFields) return null;
-
   return (
 
     <section

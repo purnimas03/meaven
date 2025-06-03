@@ -1,25 +1,5 @@
-"use client";
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
 const WatchUsInAction = () => {
-  const [playingVideo, setPlayingVideo] = useState(null);
-
-    const [videos, fetchVideos] = useState([]);
-    
-      useEffect(() => {
-        async function loadVideos() {
-          var id = 0;
-          const videoData = await fetchFromAPI('/wp/v2/pages?slug=home');
-          if (Array.isArray(videoData) && videoData.length > 0) {
-            const Data = videoData[0]?.acf?.video_section;
-            fetchVideos(Data);
-            console.log(Data);
-          }
-        }
-        loadVideos();
-      }, []);
-  
 
   return (
     <section className="py-24 bg-[#178c78] ssm:py-16">

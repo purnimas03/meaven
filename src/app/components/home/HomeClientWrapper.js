@@ -1,10 +1,11 @@
-import WatchUsInAction from "./components/home/Watchusaction";
-import Banner from "./components/home/Banner";
-import WeeklyMealPrep from "./components/home/Weeklysilder";
-import FAQAccordion from "./components/home/Faq";
-import MissionSection from "./components/home/Misson";
-import BookingSection from "./components/home/BookingSection";
-import OurChefs from "./components/home/OurChefs";
+"use client"
+import WatchUsInAction from "./Watchusaction";
+import Banner from "./Banner";
+import WeeklyMealPrep from "./Weeklysilder";
+import FAQAccordion from "./Faq";
+import MissionSection from "./Misson";
+import BookingSection from "./BookingSection";
+import OurChefs from "./OurChefs";
 import { fetchFromAPI } from "../../../../lib/fetchapi";
 
 
@@ -71,10 +72,3 @@ export default async  function Home() {
   );
 }
 
-
-
-
-export const metadata = {
-  title: "Home | My Site",
-  description: "Welcome to my site!",
-};

@@ -1,27 +1,7 @@
-'use client';
-
 import Image from 'next/image';
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
 
 export default function MissionSection() {
-  const [acfFields, setAcfFields] = useState(null);
-
-  useEffect(() => {
-    async function loadMission() {
-      const data = await fetchFromAPI('/wp/v2/pages?slug=home');
-      if (Array.isArray(data) && data.length > 0) {
-        const missionData = data[0]?.acf?.mission;
-        setAcfFields(missionData);
-      }
-    }
-
-    loadMission();
-  }, []);
-
-  if (!acfFields) return null;
-
+  
   return (
     <section className="bg-celadongreen py-24 max-ssm:py-16">
       <div className="container">

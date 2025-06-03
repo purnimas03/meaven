@@ -1,8 +1,5 @@
-'use client';
-
 import { motion } from 'framer-motion';
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
+
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -10,20 +7,6 @@ const FAQ = () => {
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  const [fetchedFaqs , setFetchedFaqs] = useState([]);
-    
-      useEffect(() => {
-        async function loadfaqs() {
-          const faqData = await fetchFromAPI('/wp/v2/pages?slug=home');
-          if (Array.isArray(faqData) && faqData.length > 0) {
-            const Data = faqData[0]?.acf?.faq_section;
-            setFetchedFaqs(Data);
-          }
-          
-        }
-        loadfaqs();
-      }, []);
 
   return (
     <div className="container mx-auto py-24">
