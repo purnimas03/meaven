@@ -1,26 +1,7 @@
-"use client";
-import { useState, useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function DishesSection() {
-  const [dishesData, setDishesData] = useState([]);
-
-  useEffect(() => {
-    async function loadDishes() {
-      try {
-        const data = await fetchFromAPI("/custom/v1/weakly-meal-prep");
-        console.log("Fetched Dishes:", data); // for debugging
-        setDishesData(data);
-      } catch (error) {
-        console.error("Failed to fetch dishes:", error);
-      }
-    }
-
-    loadDishes();
-  }, []);
-
+export default function DishesSection({ dishesData = [] }) {
   return (
     <section className="py-24 bg-[#fde9ce] max-ssm:py-16">
       <div className="container">

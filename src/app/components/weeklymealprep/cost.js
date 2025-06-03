@@ -1,26 +1,6 @@
-"use client";
-
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 import Image from "next/image";
 
-const Cost = () => {
-  const [cost, setCost] = useState([]);
-  
-    useEffect(() => {
-      async function loadCost() {
-        const allDishes = await fetchFromAPI('/wp/v2/pages?slug=weakly-meal-prep-page');
-        if (Array.isArray(allDishes) && allDishes.length > 0) {
-          const costVal = allDishes[0]?.acf?.cost_section;
-          console.log(costVal);
-          setCost(costVal);
-
-        }
-      }
-  
-      loadCost();
-    }, []);
-
+const Cost = ({cost = [] }) => {
   return (
     <section className="bg-[#3a3a3a]">
       <div className="margin-wrap-left max-ssm:pl-0 max-2xxl:!ml-0">

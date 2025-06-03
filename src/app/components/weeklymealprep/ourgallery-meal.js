@@ -1,79 +1,10 @@
 "use client";
 import { faXmark, faArrowLeft, faArrowRight, faCirclePlay, faImages } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState ,  useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
-const galleryData = [
-  {
-    id: 1,
-    type: "video",
-    videoUrl: "https://www.youtube.com/embed/6YB0v6SUir8?si=KFwzdl3zXSYIeEHo",
-    thumbnail: "/dish-image.jpg",
-  },
-  {
-    id: 2,
-    type: "images",
-    images: [
-      { url: "/3-3.jpg", title: "Image 1" },
-      { url: "/idish-image.jpg", title: "Image 2" },
-      { url: "/3-3.jpg", title: "Image 3" },
-    ],
-  },
-  {
-    id: 3,
-    type: "images",
-    images: [
-      { url: "/3-3.jpg", title: "Image 4" }
-    ],
-  }
-];
+import { useState } from "react";
 
 
-
-export default function GallerySection() {
-  const [galleryData , setGalleryData] = useState([]);
-    
-  useEffect(() => {
-  async function loadGallery() {
-    const apiResponse = await fetchFromAPI('/custom/v1/our-gallery');
-
-    const formattedGallery = apiResponse.map((item) => {
-      // Case: video type
-      if (item.video?.video_url) {
-        return {
-          id: item.id,
-          type: "video",
-          videoUrl: item.video.video_url,
-          thumbnail: item.video.thumbnail?.url || "/default-video-thumb.jpg", // fallback thumbnail
-        };
-      }
-
-      // Case: gallery of images
-      if (item.gallery && Array.isArray(item.gallery)) {
-        const images = item.gallery.map((g, idx) => ({
-          url: g.images?.url || "/default-img.jpg",
-          title: g.images?.title || `Image ${idx + 1}`,
-        }));
-
-        return {
-          id: item.id,
-          type: "images",
-          images,
-        };
-      }
-
-      return null; // fallback if item doesn't fit expected types
-    }).filter(Boolean); // remove nulls
-
-    setGalleryData(formattedGallery);
-  }
-
-  loadGallery();
-}, []);
-
-  
-
+export default function GallerySection({galleryData = [] }) {
   const [popupIndex, setPopupIndex] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [videoSrc, setVideoSrc] = useState("");

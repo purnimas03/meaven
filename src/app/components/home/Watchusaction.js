@@ -1,6 +1,8 @@
+"use client";
+import { useState } from "react";
 
-const WatchUsInAction = () => {
-
+const WatchUsInAction = ({videos = [] }) => {
+  const [playingVideo, setPlayingVideo] = useState(null);
   return (
     <section className="py-24 bg-[#178c78] ssm:py-16">
       <div className="container">

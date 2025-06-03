@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function OurChefs() {
+export default function OurChefs({ checfList = [], chefAcf = {} }) {
  
  return (
     <section className="py-24 bg-[#ebebe5] max-ssm:py-16">

@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -7,21 +5,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
 
-export default function SampleMenu() {
-  const [menulist, fetchMenu] = useState([]);
-      
-  useEffect(() => {
-    async function loadMenuList() {
-      const list = await fetchFromAPI('/custom/v1/sample-menu');
-      fetchMenu(list);
-    }
-    loadMenuList();
-  }, []);
-
+export default function SampleMenu({menulist = [] }) {
   return (
     <section className="py-24 relative before:w-full before:h-1/2 before:absolute before:top-0 before:right-0 before:bg-[#fddb00] before:-z-[1] max-ssm:py-16">
       <div className="container">

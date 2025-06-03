@@ -1,25 +1,4 @@
-"use client";
-
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
-const WeeklyMealPrepHowItWorks = () => {
-  const [howitwork, setHowItWork] = useState([]);
-
-  useEffect(() => {
-    async function loadPoints() {
-      const howItWorkPoints = await fetchFromAPI('/wp/v2/pages?slug=weakly-meal-prep-page');
-
-      if (Array.isArray(howItWorkPoints) && howItWorkPoints.length > 0) {
-        const points = howItWorkPoints[0]?.acf?.how_it_works_section;
-        setHowItWork(points);
-        console.log(points);
-      }
-    }
-
-    loadPoints();
-  }, []);
-
+const WeeklyMealPrepHowItWorks = ({ howitwork = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16">
       <div className="container">

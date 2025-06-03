@@ -2,12 +2,10 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { register } from 'swiper/element/bundle';
-import { useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
 register(); // Swiper web component registration
 
-const WeeklyMealPrep = ({ homeWeeklyMeal }) => {
+const WeeklyMealPrep = ({ homeWeeklyMeal , slidesWeaklyMeal = [] }) => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -16,18 +14,7 @@ const WeeklyMealPrep = ({ homeWeeklyMeal }) => {
       swiperEl.initialize();
     }
   }, []);
-
-  const [slidesWeaklyMeal, setWeaklySlides] = useState([]);
-  
-    useEffect(() => {
-      async function loadWeaklyBanner() {
-        const data = await fetchFromAPI('/custom/v1/weakly-meal-prep');
-        setWeaklySlides(data);
-      }
-      loadWeaklyBanner();
-    }, []);
-
-  
+ 
   return (
     <section
       style={{ backgroundImage: "url('/weekly-bg.jpg')" }}

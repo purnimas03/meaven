@@ -3,7 +3,7 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
-export default function Slider(slides) {
+export default function Slider({ slides = [] }) {
   return (
     <div className="relative">
       <Swiper

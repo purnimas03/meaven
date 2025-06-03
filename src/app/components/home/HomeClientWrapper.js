@@ -7,10 +7,14 @@ import MissionSection from "./Misson";
 import BookingSection from "./BookingSection";
 import OurChefs from "./OurChefs";
 import { fetchFromAPI } from "../../../../lib/fetchapi";
+import { useEffect, useState } from 'react';
+import ImageLoader from "../ImageLoader";
 
 
 
-export default async  function Home() {
+
+export default function Home() {
+  const [loading, setLoading] = useState(true);
   const [slides, setSlides] = useState([]);
   const [acfFields, setAcfFields] = useState(null);
   const [fetchedFaqs, setFetchedFaqs] = useState([]);
@@ -22,41 +26,43 @@ export default async  function Home() {
 
 
   useEffect(() => {
-    async function loadBanner() {
-      const data = await fetchFromAPI('/custom/v1/banner');
-      setSlides(data);
-    }
-    loadBanner();
+    async function loadAllHomePageData() {
+      try {
+        const [
+          bannerData,
+          homePageData,
+          weeklyMealPrepData,
+          chefListData,
+        ] = await Promise.all([
+          fetchFromAPI("/custom/v1/banner"),
+          fetchFromAPI("/wp/v2/pages?slug=home"),
+          fetchFromAPI("/custom/v1/weakly-meal-prep"),
+          fetchFromAPI("/custom/v1/our-chefs"),
+        ]);
 
-    async function loadHomePageData() {
-      const section = await fetchFromAPI('/wp/v2/pages?slug=home');
-      if (Array.isArray(section) && section.length > 0) {
-        const page = section[0];
-        setAcfFields(page?.acf?.text_and_image_section);
-        setFetchedFaqs(page?.acf?.faq_section);
-        setMissionFields(page?.acf?.mission);
-        fetchVideos(page?.acf?.video_section);
-        setchefAcfFields(page?.acf?.chef_section);
-        
+        setSlides(bannerData);
+        setWeaklySlides(weeklyMealPrepData);
+       fetchChefs(chefListData);
+
+        if (Array.isArray(homePageData) && homePageData.length > 0) {
+          const page = homePageData[0];
+          setAcfFields(page?.acf?.text_and_image_section);
+          setFetchedFaqs(page?.acf?.faq_section);
+          setMissionFields(page?.acf?.mission);
+          fetchVideos(page?.acf?.video_section);
+          setchefAcfFields(page?.acf?.chef_section);
+        }
+      } catch (error) {
+        console.error("Error loading homepage data:", error);
+      } finally {
+        setLoading(false); 
       }
     }
-    loadHomePageData();
 
-    async function loadWeaklyBanner() {
-      const data = await fetchFromAPI('/custom/v1/weakly-meal-prep');
-      setWeaklySlides(data);
-    }
-    loadWeaklyBanner();
-
-    async function loadChefList() {
-      const list = await fetchFromAPI('/custom/v1/our-chefs');
-      fetchChefs(list);
-    }
-    loadChefList();
+    loadAllHomePageData();
   }, []);
 
-  if (!acfFields) return null;
-
+  if (loading || !acfFields) return <ImageLoader />;
 
 
   return (

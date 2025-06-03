@@ -1,27 +1,6 @@
-"use client";
-
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 import Image from "next/image";
 
-const WeeklyMealPrepBenefits = () => {
-
-  const [weaklyPrepBenefits , setBenefits] = useState([]);
-  
-    useEffect(() => {
-      async function loadBenefits() {
-        const weaklyPoints = await fetchFromAPI('/wp/v2/pages?slug=weakly-meal-prep-page');
-  
-        if (Array.isArray(weaklyPoints) && weaklyPoints.length > 0) {
-          const benefits = weaklyPoints[0]?.acf?.benefits_section;
-          setBenefits(benefits);
-          console.log(benefits);
-        }
-      }
-  
-      loadBenefits();
-    }, []);
-
+const WeeklyMealPrepBenefits = ({weaklyPrepBenefits = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16 pb-32 benefits benefits-wrapper benefits-latest max-xxl:pb-24 bg-[#178b77]">
       <div className="container">

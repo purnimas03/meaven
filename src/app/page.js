@@ -1,72 +1,9 @@
-import WatchUsInAction from "./components/home/Watchusaction";
-import Banner from "./components/home/Banner";
-import WeeklyMealPrep from "./components/home/Weeklysilder";
-import FAQAccordion from "./components/home/Faq";
-import MissionSection from "./components/home/Misson";
-import BookingSection from "./components/home/BookingSection";
-import OurChefs from "./components/home/OurChefs";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
-
+import HomePage from "./components/home/HomeClientWrapper";
 
 export default async  function Home() {
-  const [slides, setSlides] = useState([]);
-  const [acfFields, setAcfFields] = useState(null);
-  const [fetchedFaqs, setFetchedFaqs] = useState([]);
-  const [missionFields, setMissionFields] = useState(null);
-  const [videos, fetchVideos] = useState([]);
-  const [slidesWeaklyMeal, setWeaklySlides] = useState([]);
-  const [checfList, fetchChefs] = useState([]);
-  const [chefAcf, setchefAcfFields] = useState([]);
-
-
-  useEffect(() => {
-    async function loadBanner() {
-      const data = await fetchFromAPI('/custom/v1/banner');
-      setSlides(data);
-    }
-    loadBanner();
-
-    async function loadHomePageData() {
-      const section = await fetchFromAPI('/wp/v2/pages?slug=home');
-      if (Array.isArray(section) && section.length > 0) {
-        const page = section[0];
-        setAcfFields(page?.acf?.text_and_image_section);
-        setFetchedFaqs(page?.acf?.faq_section);
-        setMissionFields(page?.acf?.mission);
-        fetchVideos(page?.acf?.video_section);
-        setchefAcfFields(page?.acf?.chef_section);
-        
-      }
-    }
-    loadHomePageData();
-
-    async function loadWeaklyBanner() {
-      const data = await fetchFromAPI('/custom/v1/weakly-meal-prep');
-      setWeaklySlides(data);
-    }
-    loadWeaklyBanner();
-
-    async function loadChefList() {
-      const list = await fetchFromAPI('/custom/v1/our-chefs');
-      fetchChefs(list);
-    }
-    loadChefList();
-  }, []);
-
-  if (!acfFields) return null;
-
-
-
   return (
     <div>
-      <Banner slides={slides} />
-      <MissionSection missionFields={missionFields} />
-      <BookingSection acfFields = {acfFields} />
-      <WeeklyMealPrep slidesWeaklyMeal = {slidesWeaklyMeal} />
-      <OurChefs checfList={checfList} chefAcf={chefAcf}/>
-      <FAQAccordion fetchedFaqs = {fetchedFaqs} />
-      <WatchUsInAction videos = {videos}/>
+      <HomePage/>
     </div>
   );
 }
