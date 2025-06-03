@@ -1,47 +1,11 @@
-'use client';
-import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchFromAPI } from '../../../../lib/fetchapi';
 
-const AthleticsApproachSection = () => {
-  const [athleticApproach, setAthleticApproach] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function loadApproachAthlete() {
-      try {
-        const approcahlist = await fetchFromAPI('/wp/v2/pages?slug=maeven-athletics');
-        if (Array.isArray(approcahlist) && approcahlist.length > 0) {
-          const approachData = approcahlist[0]?.acf?.our_approach_section;
-          if (approachData) {
-            setAthleticApproach(approachData);
-          } else {
-            throw new Error('Approach section is undefined');
-          }
-        } else {
-          throw new Error('Fetched list is empty or invalid');
-        }
-      } catch (err) {
-        console.error(err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadApproachAthlete();
-  }, []);
-
+const AthleticsApproachSection = ({ athleticApproach }) => {
   return (
     <section className="py-24 max-ssm:py-16 benefits benefits-wrapper bg-[#158370]">
       <div className="container">
-        {loading ? (
-          <p className="text-white text-center">Loading...</p>
-        ) : error ? (
-          <p className="text-red-500 text-center">Error: {error}</p>
-        ) : (
           <div className="grid grid-cols-2 items-center max-mmmd:grid-cols-1 gap-y-11 max-xxl:items-start gap-x-24">
             <div className="max-mmmd:order-2 max-mmmd:text-center">
               {athleticApproach?.heading && (
@@ -72,17 +36,18 @@ const AthleticsApproachSection = () => {
             </div>
 
             <div className="relative ml-auto max-mmmd:mx-auto images-wrap h-[510px] max-sxl:h-[420px] max-sxl:w-[420px] max-ssm:h-[300px] max-ssm:w-[300px] w-[510px] rounded-full transition-all before:transition-all hover:before:-translate-y-3 before:absolute max-mmmd:before:top-7 max-mmmd:before:left-2 before:top-0 before:left-10 before:bg-no-repeat before:bg-contain before:w-[121px] max-mmmd:before:w-[100px] before:z-50 max-mmmd:before:h-[100px] before:h-[121px] bg-lemonpic max-ssm:before:w-[70px] max-ssm:before:h-[70px]">
-              <Image
-                loading="lazy"
-                alt={athleticApproach.image.alt}
-                width={510}
-                height={510}
-                className="h-[510px] max-sxl:h-[420px] max-sxl:w-[420px] max-ssm:h-[300px] max-ssm:w-[300px] transition-all rounded-full w-[510px] object-cover"
-                src={athleticApproach.image.url}
-              />
+              {athleticApproach?.image?.url && (
+                <Image
+                  loading="lazy"
+                  alt="fgd"
+                  width={510}
+                  height={510}
+                  className="h-[510px] max-sxl:h-[420px] max-sxl:w-[420px] max-ssm:h-[300px] max-ssm:w-[300px] transition-all rounded-full w-[510px] object-cover"
+                  src={athleticApproach.image.url}
+                />
+              )}
             </div>
           </div>
-        )}
       </div>
     </section>
   );

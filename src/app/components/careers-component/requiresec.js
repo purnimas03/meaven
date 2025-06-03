@@ -1,33 +1,9 @@
 "use client";
-
-import { useState , useEffect } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
-
-const RequirementsSection = () => {
+import { useState } from "react";
+const RequirementsSection = ({ list = [] }) => {
   const [careerPageThird, setCareerPageThird] = useState({
     title: "Requirements",
   });
-
-  const [list, setRequirementsFields] = useState([]);
-  useEffect(() => {
-    async function loadChefAcf() {
-      const requirement = await fetchFromAPI('/wp/v2/pages?slug=career');
-      if (Array.isArray(requirement) && requirement.length > 0) {
-        const chefData = requirement[0]?.acf?.requirements;
-        setRequirementsFields(chefData);
-      }
-    }
-    loadChefAcf();
-  }, []);
-
-  const careerRequirements = [
-    { title: "Culinary Expertise", description: "Proficiency in cooking a variety of cuisines (vegetarian, non-vegetarian, vegan, gluten-free, etc.)" },
-    { title: "Food Safety Certification", description: "Valid food safety certification (e.g., FSSAI)" },
-    { title: "Culinary Expertise", description: "Ability to provide your own cooking equipment and ingredients" },
-    { title: "Communication Skills", description: "Excellent communication and interpersonal skills" },
-    { title: "Reliability", description: "Punctuality and commitment to client satisfaction" },
-  ];
-
   return (
     <section className="py-24 bg-[#ffedd6] max-ssm:py-16 pb-32 max-xxl:pb-24">
       <div className="container">

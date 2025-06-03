@@ -1,22 +1,8 @@
-"use client";
 import React from "react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
-const OurChefs = ({ title, description }) => {
-  const [careerChefSec, setAcfFields] = useState([]);
-  useEffect(() => {
-    async function loadCareerChef() {
-      const list = await fetchFromAPI('/wp/v2/pages?slug=career');
-      if (Array.isArray(list) && list.length > 0) {
-        const chefData = list[0]?.acf.join_the_culinary_revolution_section;
-        setAcfFields(chefData);
-        console.log(chefData);
-      }
-    }
-    loadCareerChef();
-  }, []);
+
+const OurChefs = ({ careerChefSec = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16 pb-32 max-xxl:pb-24">
       <div className="container">

@@ -1,41 +1,11 @@
 'use client';
 
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function DinnerPartyTabs() {
-  const [tabberData, setTabberFields] = useState([]);
+export default function DinnerPartyTabs({ tabberData = [] }) {
   const [activeTab, setActiveTab] = useState(1);
   const [selectedTab, setSelectedTab] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    async function loadTabber() {
-      const list = await fetchFromAPI('/wp/v2/pages?slug=dinner-parties');
-      if (Array.isArray(list) && list.length > 0) {
-        const pricingData = list[0]?.acf?.party_theme_tabber;
-        const normalizedData = Array.isArray(pricingData)
-          ? pricingData
-          : pricingData && typeof pricingData === 'object'
-          ? Object.values(pricingData)
-          : [];
-  
-        setTabberFields(normalizedData);
-
-        // Initialize selectedTab and activeTab when data is loaded
-        if (normalizedData.length > 0) {
-          setSelectedTab(normalizedData[0].tab_title);
-          setActiveTab(1);
-        }
-      }
-    }
-    loadTabber();
-  }, []);
-
-  // Loading state: show nothing or loader if no data yet
-  if (tabberData.length === 0) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <section className="py-24 ssm:py-16">

@@ -1,26 +1,4 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-const AthleticLogosSection = () => {
-  const [logos, setLogos] = useState([]);
-      
-  useEffect(() => {
-  async function loadLogos() {
-    const list = await fetchFromAPI('/wp/v2/pages?slug=maeven-athletics');
-    if (Array.isArray(list) && list.length > 0) {
-      const athleteData = list[0]?.acf?.logos_section;
-      if (athleteData) {
-        setLogos(athleteData);
-      } else {
-        console.error('Athletic icon box section is undefined');
-      }
-    } else {
-      console.error('Fetched list is not an array or is empty');
-    }
-  }
-  loadLogos();
-}, []);
-
+const AthleticLogosSection = ({ logos = [] }) => {
   return (
     <section className="pb-24 pt-9 max-ssm:pb-16">
       <div className="container">

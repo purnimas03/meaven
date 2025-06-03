@@ -1,28 +1,6 @@
-"use client";
 import Image from "next/image";
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-import { useEffect, useState } from "react";
 
-const AthleticIconBoxes = () => {
-  const [athleticIcon, setathleticIcon] = useState([]);
-      
-  useEffect(() => {
-  async function loadIcons() {
-    const list = await fetchFromAPI('/wp/v2/pages?slug=maeven-athletics');
-    if (Array.isArray(list) && list.length > 0) {
-      const athleteData = list[0]?.acf?.athletic_icon_box_section;
-      if (athleteData) {
-        setathleticIcon(athleteData);
-      } else {
-        console.error('Athletic icon box section is undefined');
-      }
-    } else {
-      console.error('Fetched list is not an array or is empty');
-    }
-  }
-  loadIcons();
-}, []);
-
+const AthleticIconBoxes = ({ athleticIcon = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16">
       <div className="container">

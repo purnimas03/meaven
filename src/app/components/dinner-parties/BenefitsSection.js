@@ -1,25 +1,9 @@
 // components/BenefitsSection.tsx
-"use client";
 import Image from 'next/image';
 import React from 'react';
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-import { useEffect, useState } from "react";
 
 
-const BenefitsSection = () => {
-  const [benefitFields, setBenefitFields] = useState({});
-
-  useEffect(() => {
-    async function loadBenefits() {
-      const list = await fetchFromAPI('/wp/v2/pages?slug=dinner-parties');
-      if (Array.isArray(list) && list.length > 0) {
-        const benefitData = list[0]?.acf?.right_image_with_text_section;
-        setBenefitFields(benefitData);
-      }
-    }
-    loadBenefits();
-  }, []);
-
+const BenefitsSection = ({benefitFields = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16 pb-32 max-xxl:pb-24 benefits benefits-wrapper">   
       <div className="container">

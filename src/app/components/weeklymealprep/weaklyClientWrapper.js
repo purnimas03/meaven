@@ -1,15 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
 import { fetchFromAPI } from "../../../../lib/fetchapi";
-import FeatureImage from "../components/FeatureImage";
-import DishesSection from "../components/weeklymealprep/addons";
-import WeeklyMealPrepBenefits from "../components/weeklymealprep/benefits";
-import Cost from "../components/weeklymealprep/cost";
-import WeeklyMealPrepHowItWorks from "../components/weeklymealprep/howitwork";
-import GallerySection from "../components/weeklymealprep/ourgallery-meal";
-import SampleMenu from "../components/weeklymealprep/samplemenu";
+import FeatureImage from "../FeatureImage";
+import DishesSection from "./addons";
+import WeeklyMealPrepBenefits from "./benefits";
+import Cost from "./cost";
+import WeeklyMealPrepHowItWorks from "./howitwork";
+import GallerySection from "./ourgallery-meal";
+import SampleMenu from "./samplemenu";
+import ImageLoader from "../ImageLoader";
+
 
 export default function Weeklymealprep() {
+    const [loading, setLoading] = useState(true);
     const [dishesData, setDishesData] = useState([]);
     const [weaklyPrepBenefits , setBenefits] = useState([]);
     const [cost, setCost] = useState([]);
@@ -63,10 +66,13 @@ export default function Weeklymealprep() {
                 setCost(page?.acf?.cost_section);
                 setHowItWork(page?.acf?.how_it_works_section);
             }
+
+            setLoading(false);
         }
     
         loadAllData();
       }, []);
+      if (loading) return <ImageLoader />;
     return (
         <div>
            <FeatureImage/>

@@ -1,8 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-
-const AthleticHowItWorks = () => {
+import React, { useEffect, useState } from 'react';
+const AthleticHowItWorks = ({athleticHowItWorks = [] }) => {
   const [activeTab, setActiveTab] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -15,26 +13,7 @@ const AthleticHowItWorks = () => {
   }, []);
 
   const sectionTitle = 'How It Works';
-
-  const [athleticHowItWorks, setathleticHowItWorks] = useState([]);
-        
-    useEffect(() => {
-    async function loadHowItWorks() {
-      const list = await fetchFromAPI('/wp/v2/pages?slug=maeven-athletics');
-      if (Array.isArray(list) && list.length > 0) {
-        const athleteData = list[0]?.acf?.how_it_works_section;
-        if (athleteData) {
-          setathleticHowItWorks(athleteData);
-        } else {
-          console.error('Athletic icon box section is undefined');
-        }
-      } else {
-        console.error('Fetched list is not an array or is empty');
-      }
-    }
-    loadHowItWorks();
-  }, []);
-
+  
   return (
     <section className="py-24 max-ssm:py-16">
       <div className="container">

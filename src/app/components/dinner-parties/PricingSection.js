@@ -1,23 +1,6 @@
-'use client';
-
 import React from 'react';
-import { fetchFromAPI } from '../../../../lib/fetchapi';
-import { useEffect, useState } from "react";
 
-const PricingSection = () => {
-  const [pricingFields, setPricingFields] = useState([]);
-  
-  useEffect(() => {
-    async function loadPricing() {
-      const list = await fetchFromAPI('/wp/v2/pages?slug=dinner-parties');
-      if (Array.isArray(list) && list.length > 0) {
-        const pricingData = list[0]?.acf?.pricing_section;
-        setPricingFields(pricingData);
-      }
-    }
-    loadPricing();
-  }, []);
-
+const PricingSection = ({pricingFields = [] }) => {
   return (
     <section className="py-24 max-ssm:py-16 bg-[#3a3a3a]">
       <div className="container">

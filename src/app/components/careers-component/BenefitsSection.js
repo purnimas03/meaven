@@ -1,22 +1,6 @@
-"use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { fetchFromAPI } from "../../../../lib/fetchapi";
 
-const BenefitsSection = () => {
-    const [benefitSec , setAcfFields] = useState([]);
-      useEffect(() => {
-        async function loadBenefitSec() {
-          const list = await fetchFromAPI('/wp/v2/pages?slug=career');
-          if (Array.isArray(list) && list.length > 0) {
-            const chefData = list[0]?.acf.benefits_section;
-            setAcfFields(chefData);
-            console.log(chefData);
-          }
-        }
-        loadBenefitSec();
-      }, []);
-
+const BenefitsSection = ({ benefitSec = [] }) => {
     return (
         <section className="py-24 bg-[#178c78] max-ssm:py-16 pb-32 max-xxl:pb-24">
             <div className="container">
