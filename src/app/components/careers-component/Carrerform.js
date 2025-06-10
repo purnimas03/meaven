@@ -1,9 +1,7 @@
 "use client";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const CareerForm = () => {
-  // Your original state and handlers untouched
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,46 +15,30 @@ const CareerForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ====== Add these states for recaptcha ======
-  const [recaptchaToken, setRecaptchaToken] = useState("");
-  const [isClient, setIsClient] = useState(false);
-  // ============================================
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); 
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData((prev) => ({ ...prev, file }));
     setFileName(file ? file.name : "");
-    setErrors((prev) => ({ ...prev, file: "" }));
+    setErrors((prev) => ({ ...prev, file: "" })); 
   };
-
-  // ===== Add this handler for recaptcha change =====
-  const handleRecaptchaChange = (token) => {
-    setRecaptchaToken(token);
-    setErrors((prev) => ({ ...prev, recaptcha: "" }));
-  };
-  // =================================================
-
-  // Add client-side detection for reCAPTCHA rendering
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const validate = () => {
     const newErrors = {};
 
-    // Your existing validations untouched
+    // Basic required checks
     if (!formData.firstName.trim()) newErrors.firstName = "First Name is required.";
     if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required.";
     if (!formData.subject.trim()) newErrors.subject = "Subject is required.";
     if (!formData.message.trim()) newErrors.message = "Message is required.";
     if (!formData.file) newErrors.file = "File upload is required.";
 
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else {
@@ -66,21 +48,19 @@ const CareerForm = () => {
       }
     }
 
-    const digitsOnly = formData.phone.replace(/\D/g, "");
+    // Phone validation (sanitize and check)
+    const digitsOnly = formData.phone.replace(/\D/g, ""); // keep only digits
+
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone is required.";
     } else if (digitsOnly.length !== 10) {
       newErrors.phone = "Phone number must be exactly 10 digits.";
     }
 
-    // Add recaptcha validation here
-    if (!recaptchaToken) {
-      newErrors.recaptcha = "Please verify you're not a robot.";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,17 +81,11 @@ const CareerForm = () => {
       data.append("input_8", formData.file);
     }
 
-    // ===== Add recaptcha token to form data =====
-    if (recaptchaToken) {
-      data.append("g-recaptcha-response", recaptchaToken);
-    }
-    // ============================================
-
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
         method: "POST",
         headers: {
-          "Authorization": "Bearer YOUR_ACCESS_TOKEN", // Make sure you replace this with a valid token
+          "Authorization": "Bearer YOUR_ACCESS_TOKEN",
         },
         body: data,
       });
@@ -129,7 +103,6 @@ const CareerForm = () => {
         });
         setFileName("");
         setErrors({});
-        setRecaptchaToken("");
       } else {
         alert("Submission failed: " + (result.message || "Unknown error"));
       }
@@ -279,53 +252,36 @@ const CareerForm = () => {
                 )}
               </div>
 
-              <div className="border-2 h-24 cursor-pointer border-dashed border-[#4f988d] flex items-center justify-center text-white relative">
+              <div className="border-2 h-24 cursor-pointer border-dashed border-[#81b7ae] p-4 rounded flex flex-col items-center justify-center">
+                <input
+                  type="file"
+                  name="file"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  id="fileUpload"
+                />
                 <label
                   htmlFor="fileUpload"
-                  className="absolute inset-0 cursor-pointer flex flex-col items-center justify-center"
+                  className={`font-human-sansregular text-[15px] cursor-pointer ${
+                    errors.file ? "text-red-500" : "text-white"
+                  }`}
                 >
-                  {fileName ? (
-                    <span className="text-white">{fileName}</span>
-                  ) : (
-                    <span className="text-white font-human-sansregular text-xl">
-                      Upload your Resume here
-                    </span>
-                  )}
-                  <input
-                    type="file"
-                    name="file"
-                    id="fileUpload"
-                    accept=".pdf,.doc,.docx"
-                    className="hidden"
-                    onChange={handleFileChange}
-                    required
-                  />
+                  {fileName || "Choose File or Drop Here"}
                 </label>
+                {errors.file && (
+                  <p className="text-red-500 text-sm mt-1">{errors.file}</p>
+                )}
               </div>
-              {errors.file && (
-                <p className="text-red-500 text-sm mt-1">{errors.file}</p>
-              )}
-
-              {/* ========== RECAPTCHA ========== */}
-              {isClient && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-                <div className="my-4">
-                  <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    onChange={handleRecaptchaChange}
-                  />
-                  {errors.recaptcha && (
-                    <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
-                  )}
-                </div>
-              )}
-              {/* ================================ */}
-
               <button
                 type="submit"
+                className="group min-w-[170px] mt-6 block max-w-fit"
                 disabled={isSubmitting}
-                className="inline-block px-8 py-3 bg-yellowish text-black font-human-sansregular text-xl max-w-[200px]"
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
+                <div className="bg-yellowish border-2 border-solid border-black shadow-custombtn px-5 py-[10px] z-10 group-hover:before:top-0 overflow-hidden relative before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-full before:bg-[#178b77] before:z-[-1] before:duration-[.5s]">
+                  <span className="inline-block text-black group-hover:text-white font-human-sansregular text-[15px] leading-4">
+                    {isSubmitting ? "Submitting..." : "Submit"}
+                  </span>
+                </div>
               </button>
             </form>
           </div>
