@@ -7,8 +7,11 @@ export default function Slider({ slides = [] }) {
   return (
     <div className="relative">
       <Swiper
+        key={slides.length}
         modules={[Pagination]}
         loop={true}
+        speed={300}
+        autoplay={true}
         pagination={{
             el: ".custom-swiper-pagination", // Ensure it matches the div class below
             clickable: true,
