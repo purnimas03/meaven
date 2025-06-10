@@ -52,6 +52,7 @@ const WeeklyMealPrep = ({ homeWeeklyMeal , slidesWeaklyMeal = [] }) => {
             space-between="20"
             className="w-full max-w-full border-t border-l border-b border-[#a1d0c8] border-solid swiper-container2 overflow-hidden"
             scrollbar='{"el": ".swiper-scrollbar2", "draggable": true}'
+            loop={true}
           >
             {slidesWeaklyMeal.map((dish, index) => {
               const slug = dish.slug.split('/').filter(Boolean).pop();

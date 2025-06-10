@@ -8,6 +8,7 @@ export default function Slider({ slides = [] }) {
     <div className="relative">
       <Swiper
         modules={[Pagination]}
+        loop={true}
         pagination={{
             el: ".custom-swiper-pagination", // Ensure it matches the div class below
             clickable: true,
