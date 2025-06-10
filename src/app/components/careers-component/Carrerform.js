@@ -3,6 +3,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useState, useEffect } from "react";
 
 const CareerForm = () => {
+  // Your original state and handlers untouched
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,15 +16,11 @@ const CareerForm = () => {
   const [fileName, setFileName] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ====== Add these states for recaptcha ======
   const [recaptchaToken, setRecaptchaToken] = useState("");
   const [isClient, setIsClient] = useState(false);
-
-  // Set client flag on mount so recaptcha only renders client-side
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  // ============================================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,14 +35,22 @@ const CareerForm = () => {
     setErrors((prev) => ({ ...prev, file: "" }));
   };
 
+  // ===== Add this handler for recaptcha change =====
   const handleRecaptchaChange = (token) => {
     setRecaptchaToken(token);
     setErrors((prev) => ({ ...prev, recaptcha: "" }));
   };
+  // =================================================
+
+  // Add client-side detection for reCAPTCHA rendering
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const validate = () => {
     const newErrors = {};
 
+    // Your existing validations untouched
     if (!formData.firstName.trim()) newErrors.firstName = "First Name is required.";
     if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required.";
     if (!formData.subject.trim()) newErrors.subject = "Subject is required.";
@@ -62,13 +67,13 @@ const CareerForm = () => {
     }
 
     const digitsOnly = formData.phone.replace(/\D/g, "");
-
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone is required.";
     } else if (digitsOnly.length !== 10) {
       newErrors.phone = "Phone number must be exactly 10 digits.";
     }
 
+    // Add recaptcha validation here
     if (!recaptchaToken) {
       newErrors.recaptcha = "Please verify you're not a robot.";
     }
@@ -95,15 +100,18 @@ const CareerForm = () => {
     if (formData.file) {
       data.append("input_8", formData.file);
     }
-    // Append the recaptcha token with the correct field name expected by Gravity Forms
-    data.append("g-recaptcha-response", recaptchaToken);
+
+    // ===== Add recaptcha token to form data =====
+    if (recaptchaToken) {
+      data.append("g-recaptcha-response", recaptchaToken);
+    }
+    // ============================================
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
         method: "POST",
         headers: {
-          // Make sure to replace "YOUR_ACCESS_TOKEN" with actual token or remove header if not needed
-          Authorization: "Bearer YOUR_ACCESS_TOKEN",
+          "Authorization": "Bearer YOUR_ACCESS_TOKEN", // Make sure you replace this with a valid token
         },
         body: data,
       });
@@ -121,7 +129,7 @@ const CareerForm = () => {
         });
         setFileName("");
         setErrors({});
-        setRecaptchaToken(""); // Reset recaptcha token after successful submission
+        setRecaptchaToken("");
       } else {
         alert("Submission failed: " + (result.message || "Unknown error"));
       }
@@ -257,12 +265,11 @@ const CareerForm = () => {
 
               <div className="mb-4 flex flex-col">
                 <textarea
-                  rows={3}
                   name="message"
                   placeholder="Message*"
                   value={formData.message}
                   onChange={handleChange}
-                  className={`px-3 py-3 focus:outline-none font-human-sansregular text-[15px] bg-white text-black placeholder:text-[#333333] border w-full ${
+                  className={`px-3 py-3 focus:outline-none font-human-sansregular text-[15px] bg-white text-black placeholder:text-[#333333] border w-full h-32 ${
                     errors.message ? "border-red-500" : "border-[#4f988d]"
                   }`}
                   required
@@ -272,43 +279,51 @@ const CareerForm = () => {
                 )}
               </div>
 
-              <div className="mb-4 flex flex-col">
+              <div className="border-2 h-24 cursor-pointer border-dashed border-[#4f988d] flex items-center justify-center text-white relative">
                 <label
-                  htmlFor="file-upload"
-                  className={`block px-3 py-3 bg-white border border-[#4f988d] cursor-pointer font-human-sansregular text-[15px] ${
-                    errors.file ? "border-red-500" : ""
-                  }`}
+                  htmlFor="fileUpload"
+                  className="absolute inset-0 cursor-pointer flex flex-col items-center justify-center"
                 >
-                  {fileName || "Upload Your Resume*"}
+                  {fileName ? (
+                    <span className="text-white">{fileName}</span>
+                  ) : (
+                    <span className="text-white font-human-sansregular text-xl">
+                      Upload your Resume here
+                    </span>
+                  )}
+                  <input
+                    type="file"
+                    name="file"
+                    id="fileUpload"
+                    accept=".pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    required
+                  />
                 </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  name="file"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  required
-                />
-                {errors.file && (
-                  <p className="text-red-500 text-sm mt-1">{errors.file}</p>
-                )}
               </div>
+              {errors.file && (
+                <p className="text-red-500 text-sm mt-1">{errors.file}</p>
+              )}
 
-              <div className="mt-4">
-                {isClient && siteKey ? (
-                  <ReCAPTCHA sitekey={siteKey} onChange={handleRecaptchaChange} />
-                ) : (
-                  <p className="text-white">Loading reCAPTCHA...</p>
-                )}
-                {errors.recaptcha && (
-                  <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
-                )}
-              </div>
+              {/* ========== RECAPTCHA ========== */}
+              {isClient && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                <div className="my-4">
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    onChange={handleRecaptchaChange}
+                  />
+                  {errors.recaptcha && (
+                    <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
+                  )}
+                </div>
+              )}
+              {/* ================================ */}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-8 py-3 font-human-sansbold text-[15px] bg-yellowish border border-black rounded shadow-custombtn hover:shadow-none hover:bg-transparent hover:text-yellowish transition duration-300 ease-in-out"
+                className="inline-block px-8 py-3 bg-yellowish text-black font-human-sansregular text-xl max-w-[200px]"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
