@@ -1,4 +1,5 @@
 "use client";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 
 const CareerForm = () => {
@@ -14,6 +15,7 @@ const CareerForm = () => {
   const [fileName, setFileName] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +30,10 @@ const CareerForm = () => {
     setErrors((prev) => ({ ...prev, file: "" })); 
   };
 
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
+    setErrors((prev) => ({ ...prev, recaptcha: "" }));
+  };
   const validate = () => {
     const newErrors = {};
 
@@ -55,6 +61,9 @@ const CareerForm = () => {
       newErrors.phone = "Phone is required.";
     } else if (digitsOnly.length !== 10) {
       newErrors.phone = "Phone number must be exactly 10 digits.";
+    }
+    if (!recaptchaToken) {
+      newErrors.recaptcha = "Please verify you're not a robot.";
     }
 
     setErrors(newErrors);
@@ -270,6 +279,15 @@ const CareerForm = () => {
                 </label>
                 {errors.file && (
                   <p className="text-red-500 text-sm mt-1">{errors.file}</p>
+                )}
+              </div>
+              <div className="mt-4">
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={handleRecaptchaChange}
+                />
+                {errors.recaptcha && (
+                  <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
                 )}
               </div>
               <button
