@@ -283,7 +283,7 @@ const CareerForm = () => {
 
               {/* Google reCAPTCHA */}
               <ReCAPTCHA
-                sitekey="6LeuSlsrAAAAAO7RNobf0iSNR_XVT7U9Ftkz0Aiu" // Replace with your site key
+                sitekey="6LeSSlsrAAAAAAWccoHcDTapiYa1a7TlqehnlJ7D" // Replace with your site key
                 onChange={(token) => setRecaptchaToken(token)}
               />
 
