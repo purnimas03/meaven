@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const CareerForm = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const CareerForm = () => {
   const [fileName, setFileName] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,12 +63,16 @@ const CareerForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isSubmitting) return;
     if (!validate()) return;
+
+    if (!recaptchaToken) {
+      alert("Please complete the reCAPTCHA.");
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -80,6 +86,7 @@ const CareerForm = () => {
     if (formData.file) {
       data.append("input_8", formData.file);
     }
+    data.append("recaptchaToken", recaptchaToken); // Add the reCAPTCHA token
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
@@ -103,6 +110,7 @@ const CareerForm = () => {
         });
         setFileName("");
         setErrors({});
+        setRecaptchaToken(null); // Reset reCAPTCHA token
       } else {
         alert("Submission failed: " + (result.message || "Unknown error"));
       }
@@ -272,6 +280,13 @@ const CareerForm = () => {
                   <p className="text-red-500 text-sm mt-1">{errors.file}</p>
                 )}
               </div>
+
+              {/* Google reCAPTCHA */}
+              <ReCAPTCHA
+                sitekey="6LeuSlsrAAAAAO7RNobf0iSNR_XVT7U9Ftkz0Aiu" // Replace with your site key
+                onChange={(token) => setRecaptchaToken(token)}
+              />
+
               <button
                 type="submit"
                 className="group min-w-[170px] mt-6 block max-w-fit"
