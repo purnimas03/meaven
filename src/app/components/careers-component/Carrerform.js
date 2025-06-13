@@ -13,7 +13,17 @@ const CareerForm = () => {
     file: null,
   });
   const [fileName, setFileName] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+    file: "",
+    recaptcha: "", // Add this line
+    submission: "", // For submission errors
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
 
