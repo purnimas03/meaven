@@ -79,10 +79,9 @@ const CareerForm = () => {
 
     if (isSubmitting) return;
 
-    // Validate all fields except reCAPTCHA first
-    const isValid = validate();
     
-    // Check if reCAPTCHA is completed
+    const isValid = validate();
+  
     if (!recaptchaToken) {
       setErrors((prev) => ({
         ...prev,
