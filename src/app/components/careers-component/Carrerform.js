@@ -55,7 +55,8 @@ const CareerForm = () => {
       newErrors.email = "Email is required.";
     } else {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(formData.email)) {
+      if (!emailPattern.test(formData.email)) 
+      {
         newErrors.email = "Please enter a valid email address.";
       }
     }
@@ -79,14 +80,20 @@ const CareerForm = () => {
     if (isSubmitting) return;
 
     // Validate all fields except reCAPTCHA first
-    if (!validate()) {
-      return; // Do not proceed if there are validation errors
-    }
-
+    const isValid = validate();
+    
     // Check if reCAPTCHA is completed
     if (!recaptchaToken) {
-      setErrors((prev) => ({ ...prev, recaptcha: "Please complete the reCAPTCHA." }));
+      setErrors((prev) => ({
+        ...prev,
+        recaptcha: "Please complete the reCAPTCHA.",
+      }));
       return; // Do not proceed if reCAPTCHA is not completed
+    }
+
+    // If validation fails, include the reCAPTCHA error in the errors state
+    if (!isValid) {
+      return; // Do not proceed if there are validation errors
     }
 
     setIsSubmitting(true);
@@ -103,12 +110,15 @@ const CareerForm = () => {
 
       if (!verificationResponse.ok) {
         const result = await verificationResponse.json();
-        setErrors((prev) => ({ ...prev, recaptcha: "reCAPTCHA verification failed: " + result.message }));
+        setErrors((prev) => ({
+          ...prev,
+          recaptcha: "reCAPTCHA verification failed: " + result.message,
+        }));
         setIsSubmitting(false);
         return;
       }
 
-      // Proceed with form submission
+      // Proceed with form submission only if reCAPTCHA is verified
       const data = new FormData();
       data.append("input_1", formData.firstName);
       data.append("input_3", formData.lastName);
@@ -119,7 +129,6 @@ const CareerForm = () => {
       if (formData.file) {
         data.append("input_8", formData.file);
       }
-      data.append("recaptchaToken", recaptchaToken); // Add the reCAPTCHA token
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
         method: "POST",
@@ -145,14 +154,22 @@ const CareerForm = () => {
         setErrors({});
         setRecaptchaToken(null); // Reset reCAPTCHA token
       } else {
-        setErrors((prev) => ({ ...prev, submission: "Submission failed: " + (result.message || "Unknown error") }));
+        setErrors((prev) => ({
+          ...prev,
+          submission: "Submission failed: " + (result.message || "Unknown error"),
+        }));
       }
     } catch (error) {
-      setErrors((prev) => ({ ...prev, submission: "Error submitting form: " + error.message }));
+      setErrors((prev) => ({
+        ...prev,
+        submission: "Error submitting form: " + error.message,
+      }));
     } finally {
       setIsSubmitting(false);
     }
   };
+
+
 
   return (
     <section className="bg-teal-700 getintouch careers-form">
@@ -328,6 +345,7 @@ const CareerForm = () => {
                   <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
                 )}
               </div>
+
 
               <button
                 type="submit"
