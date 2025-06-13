@@ -1,3 +1,4 @@
+// pages/api/verify-recaptcha.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -6,22 +7,21 @@ export default async function handler(req, res) {
   const { recaptchaToken } = req.body;
 
   if (!recaptchaToken) {
-    console.log('dsfsfsdff');
     return res.status(400).json({ message: 'reCAPTCHA token is required' });
   }
 
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Store your secret key in .env.local
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   
-  const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-  body: new URLSearchParams({
-    secret: secretKey,
-    response: recaptchaToken,
-  }),
-});
+  const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      secret: secretKey,
+      response: recaptchaToken,
+    }),
+  });
 
   if (!response.ok) {
     return res.status(500).json({ message: 'Failed to verify reCAPTCHA' });
