@@ -70,15 +70,13 @@ const CareerForm = () => {
 
     // Validate all fields except reCAPTCHA first
     if (!validate()) {
-      alert("Please fill all required fields correctly.");
-      return;
+      return; // Do not proceed if there are validation errors
     }
 
     // Check if reCAPTCHA is completed
     if (!recaptchaToken) {
       setErrors((prev) => ({ ...prev, recaptcha: "Please complete the reCAPTCHA." }));
-      console.log('reCAPTCHA not completed'); // Debugging log
-      return;
+      return; // Do not proceed if reCAPTCHA is not completed
     }
 
     setIsSubmitting(true);
@@ -95,7 +93,7 @@ const CareerForm = () => {
 
       if (!verificationResponse.ok) {
         const result = await verificationResponse.json();
-        alert("reCAPTCHA verification failed: " + result.message);
+        setErrors((prev) => ({ ...prev, recaptcha: "reCAPTCHA verification failed: " + result.message }));
         setIsSubmitting(false);
         return;
       }
@@ -123,7 +121,7 @@ const CareerForm = () => {
 
       const result = await res.json();
       if (res.ok) {
-        alert("Form submitted successfully!");
+        // Reset form and state on successful submission
         setFormData({
           firstName: "",
           lastName: "",
@@ -137,10 +135,10 @@ const CareerForm = () => {
         setErrors({});
         setRecaptchaToken(null); // Reset reCAPTCHA token
       } else {
-        alert("Submission failed: " + (result.message || "Unknown error"));
+        setErrors((prev) => ({ ...prev, submission: "Submission failed: " + (result.message || "Unknown error") }));
       }
     } catch (error) {
-      alert("Error submitting form: " + error.message);
+      setErrors((prev) => ({ ...prev, submission: "Error submitting form: " + error.message }));
     } finally {
       setIsSubmitting(false);
     }
@@ -332,6 +330,11 @@ const CareerForm = () => {
                   </span>
                 </div>
               </button>
+
+              {/* Display submission errors */}
+              {errors.submission && (
+                <p className="text-red-500 text-sm mt-1">{errors.submission}</p>
+              )}
             </form>
           </div>
         </div>
