@@ -22,11 +22,19 @@ export default async function handler(req, res) {
     }),
   });
 
-  const data = await response.json();
+  if (!response.ok) {
+    return res.status(500).json({ message: 'Failed to verify reCAPTCHA' });
+  }
 
-  if (data.success) {
-    return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
-  } else {
-    return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
+  try {
+    const data = await response.json();
+    if (data.success) {
+      return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
+    } else {
+      return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
+    }
+  } catch (error) {
+    console.error('Error parsing reCAPTCHA response:', error);
+    return res.status(500).json({ message: 'Failed to parse reCAPTCHA response' });
   }
 }
