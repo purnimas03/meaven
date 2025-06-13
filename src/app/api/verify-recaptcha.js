@@ -12,15 +12,15 @@ export default async function handler(req, res) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY; // Store your secret key in .env.local
   
   const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      secret: secretKey,
-      response: recaptchaToken,
-    }),
-  });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: new URLSearchParams({
+    secret: secretKey,
+    response: recaptchaToken,
+  }),
+});
 
   if (!response.ok) {
     return res.status(500).json({ message: 'Failed to verify reCAPTCHA' });
