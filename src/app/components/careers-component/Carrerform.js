@@ -333,7 +333,7 @@ const CareerForm = () => {
               {/* Google reCAPTCHA */}
               <div className="mt-4">
                 <ReCAPTCHA
-                  sitekey="6LeSSlsrAAAAAAWccoHcDTapiYa1a7TlqehnlJ7D" // Replace with your site key
+                  sitekey="6LcfqV8rAAAAAB_lxV9GlifMEI1UZ0usv3qhtlcH" // Replace with your site key
                   onChange={(token) => {
                     setRecaptchaToken(token);
                     setErrors((prev) => ({ ...prev, recaptcha: "" })); // Clear error on token change
