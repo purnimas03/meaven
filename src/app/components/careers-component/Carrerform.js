@@ -21,7 +21,7 @@ const CareerForm = () => {
     subject: "",
     message: "",
     file: "",
-    recaptcha: "", // Add this line
+    recaptcha: "", 
     submission: "", // For submission errors
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
