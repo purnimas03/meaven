@@ -77,6 +77,7 @@ const CareerForm = () => {
     // Check if reCAPTCHA is completed
     if (!recaptchaToken) {
       setErrors((prev) => ({ ...prev, recaptcha: "Please complete the reCAPTCHA." }));
+      console.log('reCAPTCHA not completed'); // Debugging log
       return;
     }
 
@@ -311,9 +312,9 @@ const CareerForm = () => {
                   sitekey="6LeSSlsrAAAAAAWccoHcDTapiYa1a7TlqehnlJ7D" // Replace with your site key
                   onChange={(token) => {
                     setRecaptchaToken(token);
-                    setErrors((prev) => ({ ...prev, recaptcha: "" }));
+                    setErrors((prev) => ({ ...prev, recaptcha: "" })); // Clear error on token change
                   }}
-                  onExpired={() => setRecaptchaToken(null)}
+                  onExpired={() => setRecaptchaToken(null)} // Reset token if expired
                 />
                 {errors.recaptcha && (
                   <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
@@ -340,4 +341,3 @@ const CareerForm = () => {
 };
 
 export default CareerForm;
-
