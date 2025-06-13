@@ -67,28 +67,51 @@ const CareerForm = () => {
     e.preventDefault();
 
     if (isSubmitting) return;
-    if (!validate()) return;
 
+    // Validate all fields except reCAPTCHA first
+    if (!validate()) {
+      alert("Please fill all required fields correctly.");
+      return;
+    }
+
+    // Check if reCAPTCHA is completed
     if (!recaptchaToken) {
-      alert("Please complete the reCAPTCHA.");
+      setErrors((prev) => ({ ...prev, recaptcha: "Please complete the reCAPTCHA." }));
       return;
     }
 
     setIsSubmitting(true);
 
-    const data = new FormData();
-    data.append("input_1", formData.firstName);
-    data.append("input_3", formData.lastName);
-    data.append("input_4", formData.email);
-    data.append("input_5", formData.phone);
-    data.append("input_6", formData.subject);
-    data.append("input_7", formData.message);
-    if (formData.file) {
-      data.append("input_8", formData.file);
-    }
-    data.append("recaptchaToken", recaptchaToken); // Add the reCAPTCHA token
-
+    // Verify reCAPTCHA
     try {
+      const verificationResponse = await fetch('/api/verify-recaptcha', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recaptchaToken }),
+      });
+
+      if (!verificationResponse.ok) {
+        const result = await verificationResponse.json();
+        alert("reCAPTCHA verification failed: " + result.message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Proceed with form submission
+      const data = new FormData();
+      data.append("input_1", formData.firstName);
+      data.append("input_3", formData.lastName);
+      data.append("input_4", formData.email);
+      data.append("input_5", formData.phone);
+      data.append("input_6", formData.subject);
+      data.append("input_7", formData.message);
+      if (formData.file) {
+        data.append("input_8", formData.file);
+      }
+      data.append("recaptchaToken", recaptchaToken); // Add the reCAPTCHA token
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
         method: "POST",
         headers: {
@@ -96,6 +119,7 @@ const CareerForm = () => {
         },
         body: data,
       });
+
       const result = await res.json();
       if (res.ok) {
         alert("Form submitted successfully!");
@@ -282,10 +306,19 @@ const CareerForm = () => {
               </div>
 
               {/* Google reCAPTCHA */}
-              <ReCAPTCHA
-                sitekey="6LeSSlsrAAAAAAWccoHcDTapiYa1a7TlqehnlJ7D" // Replace with your site key
-                onChange={(token) => setRecaptchaToken(token)}
-              />
+              <div className="mt-4">
+                <ReCAPTCHA
+                  sitekey="6LeSSlsrAAAAAAWccoHcDTapiYa1a7TlqehnlJ7D" // Replace with your site key
+                  onChange={(token) => {
+                    setRecaptchaToken(token);
+                    setErrors((prev) => ({ ...prev, recaptcha: "" }));
+                  }}
+                  onExpired={() => setRecaptchaToken(null)}
+                />
+                {errors.recaptcha && (
+                  <p className="text-red-500 text-sm mt-1">{errors.recaptcha}</p>
+                )}
+              </div>
 
               <button
                 type="submit"
@@ -307,3 +340,4 @@ const CareerForm = () => {
 };
 
 export default CareerForm;
+
