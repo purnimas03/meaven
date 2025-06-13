@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   const { recaptchaToken } = req.body;
 
   if (!recaptchaToken) {
+    console.log('dsfsfsdff');
     return res.status(400).json({ message: 'reCAPTCHA token is required' });
   }
 
