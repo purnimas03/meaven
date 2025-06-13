@@ -88,12 +88,11 @@ const CareerForm = () => {
         ...prev,
         recaptcha: "Please complete the reCAPTCHA.",
       }));
-      return; // Do not proceed if reCAPTCHA is not completed
+      return; 
     }
 
-    // If validation fails, include the reCAPTCHA error in the errors state
     if (!isValid) {
-      return; // Do not proceed if there are validation errors
+      return; 
     }
 
     setIsSubmitting(true);
@@ -164,7 +163,8 @@ const CareerForm = () => {
         ...prev,
         submission: "Error submitting form: " + error.message,
       }));
-    } finally {
+    } 
+    finally {
       setIsSubmitting(false);
     }
   };
