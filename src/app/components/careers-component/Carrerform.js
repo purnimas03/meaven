@@ -74,100 +74,99 @@ const CareerForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (isSubmitting) return;
+  if (isSubmitting) return;
 
-    
-    const isValid = validate();
-  
-    if (!recaptchaToken) {
+  const isValid = validate();
+
+  if (!recaptchaToken) {
+    setErrors((prev) => ({
+      ...prev,
+      recaptcha: "Please complete the reCAPTCHA.",
+    }));
+    return; 
+  }
+
+  if (!isValid) {
+    return; 
+  }
+
+  setIsSubmitting(true);
+
+  // Verify reCAPTCHA
+  try {
+    const verificationResponse = await fetch('/api/verify-recaptcha', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ recaptchaToken }),
+    });
+
+    if (!verificationResponse.ok) {
+      const result = await verificationResponse.json();
       setErrors((prev) => ({
         ...prev,
-        recaptcha: "Please complete the reCAPTCHA.",
+        recaptcha: "reCAPTCHA verification failed: " + result.message,
       }));
-      return; 
-    }
-
-    if (!isValid) {
-      return; 
-    }
-
-    setIsSubmitting(true);
-
-    // Verify reCAPTCHA
-    try {
-      const verificationResponse = await fetch('/api/verify-recaptcha', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recaptchaToken }),
-      });
-
-      if (!verificationResponse.ok) {
-        const result = await verificationResponse.json();
-        setErrors((prev) => ({
-          ...prev,
-          recaptcha: "reCAPTCHA verification failed: " + result.message,
-        }));
-        setIsSubmitting(false);
-        return;
-      }
-
-      // Proceed with form submission only if reCAPTCHA is verified
-      const data = new FormData();
-      data.append("input_1", formData.firstName);
-      data.append("input_3", formData.lastName);
-      data.append("input_4", formData.email);
-      data.append("input_5", formData.phone);
-      data.append("input_6", formData.subject);
-      data.append("input_7", formData.message);
-      if (formData.file) {
-        data.append("input_8", formData.file);
-      }
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer YOUR_ACCESS_TOKEN",
-        },
-        body: data,
-      });
-
-      const result = await res.json();
-      console.log(result);
-      if (res.ok) {
-        // Reset form and state on successful submission
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-          file: null,
-        });
-        setFileName("");
-        setErrors({});
-        setRecaptchaToken(null); // Reset reCAPTCHA token
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          submission: "Submission failed: " + (result.message || "Unknown error"),
-        }));
-      }
-    } catch (error) {
-      setErrors((prev) => ({
-        ...prev,
-        submission: "Error submitting form: " + error.message,
-      }));
-    } 
-    finally {
       setIsSubmitting(false);
+      return;
     }
-  };
+
+    // Proceed with form submission only if reCAPTCHA is verified
+    const data = new FormData();
+    data.append("input_1", formData.firstName);
+    data.append("input_3", formData.lastName);
+    data.append("input_4", formData.email);
+    data.append("input_5", formData.phone);
+    data.append("input_6", formData.subject);
+    data.append("input_7", formData.message);
+    if (formData.file) {
+      data.append("input_8", formData.file);
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer YOUR_ACCESS_TOKEN",
+      },
+      body: data,
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      // Reset form and state on successful submission
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        file: null,
+      });
+      setFileName("");
+      setErrors({});
+      setRecaptchaToken(null); // Reset reCAPTCHA token
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        submission: "Submission failed: " + (result.message || "Unknown error"),
+      }));
+    }
+  } catch (error) {
+    setErrors((prev) => ({
+      ...prev,
+      submission: "Error submitting form: " + error.message,
+    }));
+  } 
+  finally {
+    setIsSubmitting(false);
+  }
+};
+
 
 
 
