@@ -1,4 +1,3 @@
-// pages/api/verify-recaptcha.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -11,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  
+
   const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
     method: 'POST',
     headers: {
@@ -23,19 +22,10 @@ export default async function handler(req, res) {
     }),
   });
 
-  if (!response.ok) {
-    return res.status(500).json({ message: 'Failed to verify reCAPTCHA' });
-  }
-
-  try {
-    const data = await response.json();
-    if (data.success) {
-      return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
-    } else {
-      return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
-    }
-  } catch (error) {
-    console.error('Error parsing reCAPTCHA response:', error);
-    return res.status(500).json({ message: 'Failed to parse reCAPTCHA response' });
+  const data = await response.json();
+  if (data.success) {
+    return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
+  } else {
+    return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
   }
 }

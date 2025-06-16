@@ -137,6 +137,7 @@ const CareerForm = () => {
       });
 
       const result = await res.json();
+      console.log(result);
       if (res.ok) {
         // Reset form and state on successful submission
         setFormData({
