@@ -23,9 +23,11 @@ export default async function handler(req, res) {
   });
 
   const data = await response.json();
-  if (data.success) {
-    return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
-  } else {
-    return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
-  }
+if (data.success) {
+  return res.status(200).json({ message: 'reCAPTCHA verified successfully' });
+} else {
+  console.error('reCAPTCHA verification failed:', data['error-codes']); // Log error codes
+  return res.status(400).json({ message: 'reCAPTCHA verification failed', error: data['error-codes'] });
+}
+
 }
