@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const CareerForm = () => {
@@ -26,7 +26,7 @@ const CareerForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
-  const [submissionStatus, setSubmissionStatus] = useState(""); // New state for submission status
+  const recaptchaRef = useRef(); // Create a ref for the reCAPTCHA component
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,7 +94,7 @@ const CareerForm = () => {
     }
 
     setIsSubmitting(true);
-    setSubmissionStatus(""); // Reset submission status
+    setErrors({}); // Clear previous errors
 
     // Verify reCAPTCHA
     try {
@@ -149,9 +149,9 @@ const CareerForm = () => {
           file: null,
         });
         setFileName("");
-        setErrors({});
         setRecaptchaToken(null); // Reset reCAPTCHA token
-        setSubmissionStatus("Form submitted successfully!"); // Set success message
+        recaptchaRef.current.reset(); // Reset reCAPTCHA widget
+        alert("Form submitted successfully!"); // Show success alert
       } else {
         setErrors((prev) => ({
           ...prev,
@@ -332,6 +332,7 @@ const CareerForm = () => {
               {/* Google reCAPTCHA */}
               <div className="mt-4">
                 <ReCAPTCHA
+                  ref={recaptchaRef} // Attach the ref to the reCAPTCHA component
                   sitekey="6Ldkq18rAAAAABuuXlhRKhRUWeKCx42cKkTrgC4h" // Replace with your site key
                   onChange={(token) => {
                     setRecaptchaToken(token);
@@ -359,11 +360,6 @@ const CareerForm = () => {
               {/* Display submission errors */}
               {errors.submission && (
                 <p className="text-red-500 text-sm mt-1">{errors.submission}</p>
-              )}
-
-              {/* Display submission status message */}
-              {submissionStatus && (
-                <p className="text-green-500 text-sm mt-1">{submissionStatus}</p>
               )}
             </form>
           </div>
