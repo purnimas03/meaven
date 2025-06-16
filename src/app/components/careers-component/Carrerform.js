@@ -127,7 +127,11 @@ const CareerForm = () => {
       if (formData.file) {
         data.append("input_8", formData.file);
       }
-
+      // Log the FormData entries
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value);
+    }
+    
       const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API}/gf/v2/forms/1/submissions`, {
         method: "POST",
         headers: {
