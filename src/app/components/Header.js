@@ -53,7 +53,7 @@ export default function Header() {
                         </div>
                         <div className="absolute  max-2xl:static  right-0 -top-[10px] flex items-center gap-x-12 max-sxl:gap-x-6 max-ssm:gap-x-4">
                             <Link href="/maevenlogin" className="text-xl max-ssm:text-sm max-sxl:text-base text-black relative before:transnitone-anim_border before:-bottom-1 before:block before:h-[3px] before:w-0 before:bg-[#178b77] before:opacity-0 before:absolute hover:before:w-full hover:before:opacity-100 max-xxl:text-lg font-human-sansregular inline-block">Login</Link>
-                            <Link href="/book-a-chef" className="bg-[#fedb00] px-3 max-ssm:text-sm max-sxl:text-base max-sxl:min-w-32 max-xxl:text-lg max-2xl:h-[77px] max-sxl:h-[60px] h-24 flex min-w-52 justify-center items-center text-xl text-black uppercase font-human-sansregular max-ssm:!min-auto transnitone-anim hover:bg-[#178b77] hover:text-white">Book a Chef</Link>
+                            <Link href="/bookchef" className="bg-[#fedb00] px-3 max-ssm:text-sm max-sxl:text-base max-sxl:min-w-32 max-xxl:text-lg max-2xl:h-[77px] max-sxl:h-[60px] h-24 flex min-w-52 justify-center items-center text-xl text-black uppercase font-human-sansregular max-ssm:!min-auto transnitone-anim hover:bg-[#178b77] hover:text-white">Book a Chef</Link>
                         </div>
                     </div>
                 </div>
